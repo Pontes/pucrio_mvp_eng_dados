@@ -47,6 +47,7 @@ metastore_db/
 
 # IDE / SO / Cursor (local — não versionar)
 .cursor/
+.cursorignore
 AGENTS.md
 .idea/
 .vscode/
