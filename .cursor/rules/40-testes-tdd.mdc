@@ -1,8 +1,0 @@
----
-description: NÃO APLICÁVEL — substituído por @40-testes-dados.md.
-alwaysApply: false
----
-
-# Testes TDD web — redirecionar
-
-Use `@40-testes-dados.md` para pytest, reconciliação e contratos de schema.

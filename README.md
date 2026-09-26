@@ -21,11 +21,15 @@ Carga **bruta** de todos os CSVs locais para o MySQL no schema `vitacare_mvp` (t
 
 ### Código versionado
 
-- `.cursor/` + `AGENTS.md` — diretrizes do agente
 - `scripts/ingest/import_bruto.py` — importação bruta
 - `scripts/ingest/apply_schema_vitacare_mvp.py` — cria schema
 - `sql/10_schema_vitacare_mvp.sql`
 - `scripts/db.py`, `requirements.txt`, testes sintéticos
+
+### Local (fora do Git)
+
+- `.cursor/` — agents/regras Cursor
+- `AGENTS.md` — diretrizes do agente (local neste reinício)
 
 ## Carga bruta
 

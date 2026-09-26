@@ -1,1 +1,0 @@
-15-databricks-sql.mdc

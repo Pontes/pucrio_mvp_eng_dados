@@ -45,7 +45,9 @@ build/
 spark-warehouse/
 metastore_db/
 
-# IDE / SO
+# IDE / SO / Cursor (local — não versionar)
+.cursor/
+AGENTS.md
 .idea/
 .vscode/
 .DS_Store

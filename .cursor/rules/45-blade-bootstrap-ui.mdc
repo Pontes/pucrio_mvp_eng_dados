@@ -1,8 +1,0 @@
----
-description: NÃO APLICÁVEL — este MVP não possui UI Blade/Bootstrap.
-alwaysApply: false
----
-
-# Blade/Bootstrap — não aplicável
-
-Sem interface web neste repositório. Foque em pipeline, SQL, Databricks e documentação.

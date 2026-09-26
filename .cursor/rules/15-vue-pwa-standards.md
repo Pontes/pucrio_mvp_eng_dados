@@ -1,1 +1,0 @@
-15-vue-pwa-standards.mdc
