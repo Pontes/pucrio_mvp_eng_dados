@@ -1,0 +1,1 @@
+10-laravel-standards.mdc

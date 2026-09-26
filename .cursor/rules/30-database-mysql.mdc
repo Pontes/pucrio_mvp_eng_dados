@@ -1,0 +1,51 @@
+---
+description: MySQL restrito do MVP — raw, stg, vínculos, proveniência e reconciliação.
+globs:
+  - "**/sql/**"
+  - "**/*.sql"
+  - "**/scripts/**/*.py"
+alwaysApply: false
+---
+
+# MySQL — ambiente restrito
+
+Não invente tabelas/colunas. Confirme em `sql/` e no plano antes de criar.
+
+## Camadas esperadas
+
+| Camada | Exemplos | Função |
+|--------|----------|--------|
+| raw | `raw_cadastro`, `raw_consultas` | Fiel à fonte + metadados de carga |
+| stg | `stg_cadastro`, `stg_consultas` | Padronização; manter IDs até vínculos |
+| domínio | `paciente`, `paciente_identificador`, `unidade`, `atendimento` | Modelo resolvido |
+
+## Metadados de carga (mínimo)
+
+`arquivo_origem`, `linha_origem`, `data_importacao`, `competencia_extracao`, hash/versão do arquivo.
+
+## Tipos e cuidado
+
+- CPF, CNS, CNES, IDs: `CHAR`/`VARCHAR`, nunca numérico.
+- Datas: tipos de data reais; validar inconsistências na stg.
+- Dinheiro (exames, se houver): `DECIMAL`, nunca `FLOAT`.
+
+## Integridade
+
+- Reconciliar contagens: entrada = aceitos + separados.
+- Conflitos de vínculo em tabela/fila de revisão — não “escolher” linha em silêncio.
+- Unique constraints onde a regra de negócio exigir chave estável.
+- SQL parametrizado a partir do Python.
+
+## Operações destrutivas
+
+`DROP`, `TRUNCATE`, `DELETE`/`UPDATE` sem `WHERE` e reload completo exigem autorização explícita e plano de reimportação.
+
+## Performance
+
+- Índices alinhados a joins de vínculo (documento, ID, CNES, datas).
+- Cargas em lote; evitar row-by-row sem necessidade.
+- `EXPLAIN` quando seguro e útil.
+
+## Relatórios
+
+Preferir agregações no MySQL restrito para validar medidas antes de exportar. Totais de rede ≠ soma de totais por unidade quando há sobreposição de pacientes.

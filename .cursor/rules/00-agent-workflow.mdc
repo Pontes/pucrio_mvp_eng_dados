@@ -1,0 +1,36 @@
+---
+description: Fluxo base do agente para etapas do pipeline de dados e entrega do MVP.
+alwaysApply: true
+---
+
+# Fluxo base do agente
+
+Use em implementação, correção, qualidade de dados, privacidade ou documentação.
+
+## Antes de editar
+
+- Identifique a etapa do `docs/PLANO_MVP.md` (1–14) e a pergunta afetada.
+- Confirme pastas e arquivos reais; não invente schema.
+- Avalie risco de PII (`@20-privacy-lgpd`).
+- Explique o estado atual com evidências.
+- Liste impactos em raw/stg/vínculos/saída/docs.
+
+## Durante
+
+- Mudanças pequenas e incrementais.
+- Preserve regras de vínculo e grão confirmados.
+- Não altere fontes CSV originais.
+- Não envie dados à nuvem sem saída aprovada.
+- Valide com contagens/reconciliação/testes sintéticos.
+
+## Ao finalizar
+
+Entregue:
+
+- arquivos alterados;
+- o que mudou e por quê;
+- decisões e compatibilidade com o plano;
+- riscos de privacidade/qualidade (mitigados e residuais);
+- testes ou reconciliações executadas/recomendadas;
+- impacto em catálogo, qualidade e autoavaliação;
+- pendências e lacunas.

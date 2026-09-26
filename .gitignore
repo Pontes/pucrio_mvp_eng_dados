@@ -1,0 +1,59 @@
+# Git ignore — MVP engenharia de dados
+
+# Fontes e dados sensíveis
+vitacare_fontes/
+*.csv
+*.dump
+dumps/
+backups/
+exports/
+data/raw/
+data/sensitive/
+mysql_data/
+
+# Documentação local (não versionar)
+docs/
+
+# Infra local (não versionar)
+docker-compose.yml
+docker-compose.yaml
+compose.yml
+compose.yaml
+
+# Segredos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Databricks / Spark locais
+.databricks/
+spark-warehouse/
+metastore_db/
+
+# IDE / SO
+.idea/
+.vscode/
+.DS_Store
+__MACOSX
+*.log
+*.zip
+*.tar
+*.tar.gz
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

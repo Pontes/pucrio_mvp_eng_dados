@@ -1,0 +1,89 @@
+---
+description: Domínio do MVP Vitacare/Maricá — perguntas, etapas, regras de negócio, privacidade e restrições confirmadas no plano.
+alwaysApply: true
+---
+
+# Contexto específico do projeto
+
+Fontes: `docs/requisitos/PLANO_MVP.md`, `docs/requisitos/requisito_mvp.pdf` (locais). Atualize quando decisões forem confirmadas no código.
+
+## Identificação
+
+- Nome: MVP Engenharia de Dados — utilização de unidades de saúde por bairro
+- Objetivo: pipeline na nuvem para analisar atendimentos e pacientes distintos por período, bairro e unidade
+- Público: entrega acadêmica PUC-Rio; dados sob responsabilidade institucional
+- Ambientes: local restrito (CSV + MySQL Docker) e Databricks Free Edition (recomendado)
+- Entrega: 27/09; resultado 12/10; trabalho individual; Colab = nota zero
+- Repo: [Pontes/pucrio_mvp_eng_dados](https://github.com/Pontes/pucrio_mvp_eng_dados) (`git@github.com:Pontes/pucrio_mvp_eng_dados.git`)
+- Licença do **código**: MIT (`LICENSE`). Licença/**autorização dos dados** Vitacare: documentar no README (uso acadêmico; não republicar CSVs)
+
+## Arquitetura (alvo)
+
+CSV (`vitacare_fontes/`) → MySQL Docker (`vitacare_mvp` bruto) → tratamento posterior → saída aprovada → Databricks → respostas.
+
+**Confirmado no código (reinício):** apenas carga bruta para `vitacare_mvp`.
+
+MySQL local: `docker-compose.yml` + `.env` (**não versionar** compose nem senhas). Container: `mysql_db`.
+
+## Decisões de escopo
+
+- Carga atual: dump fiel de todos os CSVs em `vitacare_mvp` (sem limpeza LGPD).
+- Tratamento manual / stg / vínculos / Databricks: etapas futuras.
+- Sem exportar CPF/CNS/nome/endereço para nuvem sem aprovação.
+## Escopo inicial
+
+Fontes prioritárias: `LISTAGEM_CONSULTAS_CAP`, `LISTAGEM_CADASTRO_DO_USUARIO_CAP`.
+
+Perguntas prioritárias: 1, 2, 4, 5, 7.
+
+Expansão posterior: exames, CID, diab/hiper, consolidada, Ficha A.
+
+## Domínio e glossário
+
+| Termo | Significado |
+|-------|-------------|
+| CNES | Código da unidade de saúde |
+| paciente_id | Código interno estável (ex.: P000001); pseudonimização, não anonimização |
+| competencia_extracao | Competência do arquivo/extração; ≠ necessariamente data do evento |
+| DT_CONSULTA | Data do evento de consulta |
+| raw_* | Carga fiel à fonte + metadados de proveniência |
+| stg_* | Padronização sem eliminar identificadores antes dos vínculos |
+| grão de atendimento | Um evento de consulta validado |
+
+## Regras de negócio críticas
+
+1. Contar pacientes distintos pelo código interno estável — não por linhas, nomes ou soma de CPF/CNS.
+2. Não unir identidade só por nome; confrontar ID, CPF e CNS com regras explícitas; conflitar → fila de revisão.
+3. Não assumir mês do nome do arquivo como mês do evento (ex.: arquivo 2025-09 com consultas em ago/2025).
+4. Bairro: regra temporal documentada; não fazer join 1:N que multiplique consultas; manter ambíguo/desconhecido.
+5. Reconciliar: entrada = aceitos + separados; nunca descartar incompatíveis em silêncio.
+6. Pacientes distintos não são aditivos entre meses/unidades.
+7. Compartilhar duas unidades ≠ encaminhamento comprovado.
+8. Ficha A: não inferir títulos de coluna por suposição (cabeçalho incompleto).
+
+## Campos restritos (não publicar / não enviar à nuvem sem aprovação)
+
+CPF, CNS, IDs de origem, nomes, nome da mãe, contatos, logradouro, número, complemento, trajetórias individuais, códigos internos de pessoa na saída pública.
+
+## Fluxos críticos
+
+| Fluxo | Entrada | Etapas | Saída |
+|-------|---------|--------|-------|
+| Carga bruta | Todos CSVs `vitacare_fontes/` | `import_bruto.py` | Tabelas `csv_*` em `vitacare_mvp` |
+
+## Estado confirmado
+
+- Fontes locais: 8 tipos × `2025-09`…`2026-01` em `vitacare_fontes/` (fora do Git).
+- Código de import bruto presente; stg/domínio/Databricks **não** fazem parte deste reinício.
+- Prazo observado no plano: 27/09/2026 23h59.
+
+## Entrega acadêmica (7 tópicos)
+
+Contexto e Perguntas; Carga; Modelagem e Catálogo; Pipeline; Qualidade; Análise; Autoavaliação.
+
+## Pendências / lacunas
+
+- Tratamento pós-carga bruta (qualidade, vínculos, perguntas).
+- Documentar autorização/limites de uso acadêmico das fontes Vitacare no README.
+- Pipeline Databricks quando houver saída aprovada.
+- Nota: `docs/requisitos/MVP - Data Engineering.pdf` é exemplo de outro tema, não o enunciado deste MVP.

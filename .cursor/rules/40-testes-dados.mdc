@@ -1,0 +1,54 @@
+---
+description: Testes e reconciliação de dados para o pipeline Python/MySQL/Databricks.
+globs:
+  - "**/tests/**/*.py"
+  - "**/test_*.py"
+  - "**/*_test.py"
+  - "**/scripts/quality/**"
+  - "**/pytest.ini"
+  - "**/pyproject.toml"
+alwaysApply: false
+---
+
+# Testes e qualidade de dados
+
+Prefira TDD quando houver regra de parsing, vínculo ou agregação.
+
+## Descoberta
+
+- Confirme runner real (`pytest` ou outro).
+- Nunca aponte testes destrutivos a banco com dados reais sem isolamento.
+- Fixtures: apenas dados sintéticos.
+
+## Pirâmide útil neste MVP
+
+1. **Unitário**: limpeza de documento, parse de data, regras de qualidade isoladas.
+2. **Reconciliação**: contagens lidos/aceitos/separados batem com a fonte (ou fixture).
+3. **Contrato de schema**: colunas/tipos esperados em raw/stg/fato.
+4. **Agregação**: pacientes distintos ≠ soma de linhas; não aditividade entre partições.
+
+## Cobertura mínima por tipo
+
+### Ingestão CSV
+
+- arquivo válido;
+- linha malformada segregada com motivo;
+- documentos preservados como texto;
+- metadados de proveniência preenchidos.
+
+### Vínculo / identidade
+
+- match claro;
+- conflito (ex.: mesmo ID, CPFs distintos);
+- documento ausente/ inválido;
+- não match por nome.
+
+### Saída / agregação
+
+- grão documentado;
+- ausência de colunas restritas;
+- totais de rede calculados corretamente.
+
+## Entrega
+
+Informe testes criados, comportamento coberto, comando exato e lacunas.
