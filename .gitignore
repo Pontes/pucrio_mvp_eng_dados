@@ -1,5 +1,7 @@
 # Git ignore — MVP engenharia de dados
 
+.gitignore
+
 # Fontes e dados sensíveis
 vitacare_fontes/
 *.csv
